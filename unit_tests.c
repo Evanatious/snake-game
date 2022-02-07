@@ -106,27 +106,23 @@ bool test_is_tail() {
 }
 
 bool test_is_snake() {
-  // TODO: Implement this if you'd like!
-  printf("%s\n", "test_is_snake doesn't have any tests.");
-  return true;
+  return (is_snake('w') && is_snake('a') && is_snake('s') && is_snake('d') && is_snake('v') &&
+      is_snake('^') && is_snake('v') && is_snake('>') && is_snake('<') && is_snake('x') && !is_snake(' ')
+      && !is_snake('#') && !is_snake('*') && !is_snake('1') && !is_snake('\0'));
 }
 
 bool test_body_to_tail() {
   // TODO: Implement this if you'd like!
-  printf("%s\n", "test_body_to_tail doesn't have any tests.");
-  return true;
+  return ((body_to_tail('^') == 'w') && (body_to_tail('<') == 'a') && (body_to_tail('>') == 'd')
+   && (body_to_tail('v') == 's') && (body_to_tail('g') == NULL) && (body_to_tail('\0') == NULL));
 }
 
 bool test_incr_x() {
-  // TODO: Implement this if you'd like!
-  printf("%s\n", "test_incr_x doesn't have any tests.");
-  return true;
+  return ((incr_x('>') == 1) && (incr_x('d') == 1) && (incr_x('<') == -1) && (incr_x('a') == -1) && (incr_x('\0') == 0));
 }
 
 bool test_incr_y() {
-  // TODO: Implement this if you'd like!
-  printf("%s\n", "test_incr_y doesn't have any tests.");
-  return true;
+  return ((incr_y('v') == 1) && (incr_y('s') == 1) && (incr_y('^') == -1) && (incr_y('w') == -1) && (incr_y('\0') == 0));
 }
 
 bool test_create_default_state() {
