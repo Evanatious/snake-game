@@ -31,7 +31,38 @@ static void set_board_at(game_state_t* state, int x, int y, char ch) {
 /* Task 1 */
 game_state_t* create_default_state() {
   // TODO: Implement this function.
-  return NULL;
+  game_state_t *game = malloc(sizeof(game_state_t));
+  if (game == NULL) {
+    perror("Malloc failed\n");
+  }
+  game->x_size = 10;
+  game->y_size = 14;
+  game->board = malloc((game->y_size) * sizeof(char*));
+  if (game->board == NULL) {
+    perror("Malloc failed\n");
+  }
+  for (int i = 0; i < game->y_size; i++){
+    game->board[i] = malloc((game->x_size + 1) * sizeof(char));
+    char *line = game->board[i];
+    if (line == NULL) {
+      perror("Malloc failed\n");
+    }
+    if (i == 0 || i == game->y_size - 1) {
+      strcpy(line, "##############");
+    } else if (i == 2) {
+      strcpy(line, "#        *   #");
+    } else if (i == 4) {
+      strcpy(line, "#   d>       #");
+    } else {
+      strcpy(line, "#            #");
+    }
+  }
+  game->num_snakes = 1;
+  game->snakes = malloc((game->num_snakes) * sizeof(snake));
+  if (game->snake == NULL) {
+    perror("Malloc failed\n");
+  }
+  return game;
 }
 
 /* Task 2 */
