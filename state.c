@@ -30,7 +30,6 @@ static void set_board_at(game_state_t* state, int x, int y, char ch) {
 
 /* Task 1 */
 game_state_t* create_default_state() {
-  // TODO: Implement this function.
   game_state_t *game = malloc(sizeof(game_state_t));
   if (game == NULL) {
     perror("Malloc failed\n");
@@ -74,6 +73,13 @@ game_state_t* create_default_state() {
 /* Task 2 */
 void free_state(game_state_t* state) {
   // TODO: Implement this function.
+
+  for(int i = 0; i < state->y_size; i++) {
+    free(state->board[i]);
+  }
+  free(state->board);
+  free(state->snakes); //TODO: MIGHT have to change this in the case of more than one snake?
+  free(state);
   return;
 }
 
