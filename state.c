@@ -82,8 +82,7 @@ void free_state(game_state_t* state) {
 }
 
 /* Task 3 */
-void print_board(game_state_t* state, FILE* fp) {
-  // TODO: Implement this function.
+void print_board(game_state_t* state, FILE* fp) { 
   for (int i = 0; i < state->y_size; i++) {
     fprintf(fp, "%s", state->board[i]);
     fprintf(fp, "%c", '\n');
@@ -101,17 +100,26 @@ void save_board(game_state_t* state, char* filename) {
 /* Task 4.1 */
 static bool is_tail(char c) {
   // TODO: Implement this function.
-  return true;
+  return strchr("wasd", c);
 }
 
 static bool is_snake(char c) {
   // TODO: Implement this function.
-  return true;
+  return strchr("wasd^<>vx", c);
 }
 
 static char body_to_tail(char c) {
-  // TODO: Implement this function.
-  return '?';
+  // TODO: Check that c is in ^<>v
+  if(c == '^') {
+    return 'w';
+  } else if (c == '<') {
+    return 'a';
+  } else if (c == '>') {
+    return 'd';
+  } else if (c == 'v') {
+    return 's';
+  }
+  //return '?';
 }
 
 static int incr_x(char c) {
