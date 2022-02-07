@@ -35,8 +35,8 @@ game_state_t* create_default_state() {
   if (game == NULL) {
     perror("Malloc failed\n");
   }
-  game->x_size = 10;
-  game->y_size = 14;
+  game->x_size = 14;
+  game->y_size = 10;
   game->board = malloc((game->y_size) * sizeof(char*));
   if (game->board == NULL) {
     perror("Malloc failed\n");
@@ -58,10 +58,16 @@ game_state_t* create_default_state() {
     }
   }
   game->num_snakes = 1;
-  game->snakes = malloc((game->num_snakes) * sizeof(snake));
-  if (game->snake == NULL) {
+  game->snakes = malloc((game->num_snakes) * sizeof(snake_t));
+  if (game->snakes == NULL) {
     perror("Malloc failed\n");
   }
+  snake_t *s = game->snakes;
+  s->tail_x = 4;
+  s->tail_y = 4;
+  s->head_x = 5;
+  s->head_y = 4;
+  s->live = true;
   return game;
 }
 
