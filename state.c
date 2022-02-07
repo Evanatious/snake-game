@@ -40,7 +40,7 @@ game_state_t* create_default_state() {
   if (game->board == NULL) {
     perror("Malloc failed\n");
   }
-  for (int i = 0; i < game->y_size; i++){
+  for (int i = 0; i < game->y_size; i++) {
     game->board[i] = malloc((game->x_size + 1) * sizeof(char));
     char *line = game->board[i];
     if (line == NULL) {
@@ -72,8 +72,6 @@ game_state_t* create_default_state() {
 
 /* Task 2 */
 void free_state(game_state_t* state) {
-  // TODO: Implement this function.
-
   for(int i = 0; i < state->y_size; i++) {
     free(state->board[i]);
   }
@@ -86,6 +84,10 @@ void free_state(game_state_t* state) {
 /* Task 3 */
 void print_board(game_state_t* state, FILE* fp) {
   // TODO: Implement this function.
+  for (int i = 0; i < state->y_size; i++) {
+    fprintf(fp, "%s", state->board[i]);
+    fprintf(fp, "%c", '\n');
+  }
   return;
 }
 
