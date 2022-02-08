@@ -320,6 +320,7 @@ game_state_t* initialize_snakes(game_state_t* state) {
       if (is_tail(state->board[i][j])){
         (&(state->snakes[num_snakes]))->tail_x = i;
         (&(state->snakes[num_snakes]))->tail_y = j;
+        (&(state->snakes[num_snakes]))->live = true;
         num_snakes++;
       }
     }
