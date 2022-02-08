@@ -100,12 +100,12 @@ void save_board(game_state_t* state, char* filename) {
 /* Task 4.1 */
 static bool is_tail(char c) {
   // TODO: Implement this function.
-  return strchr("wasd", c);
+  return !(c == '\0') && strchr("wasd", c);
 }
 
 static bool is_snake(char c) {
   // TODO: Implement this function.
-  return strchr("wasd^<>vx", c);
+  return !(c == '\0') && strchr("wasd^<>vx", c);
 }
 
 static char body_to_tail(char c) {
@@ -119,29 +119,51 @@ static char body_to_tail(char c) {
   } else if (c == 'v') {
     return 's';
   }
-  //return '?';
+  return '?';
 }
 
 static int incr_x(char c) {
-  // TODO: Implement this function.
-  return 0;
+  if (c == '\0') {
+    return 0;
+  }
+  if (strchr(">d", c)) {
+    return 1;
+  }
+  else if (strchr("<a", c)) {
+    return -1;
+  }
+  else return 0;
 }
 
 static int incr_y(char c) {
-  // TODO: Implement this function.
-  return 0;
+  if (c == '\0') {
+    return 0;
+  }
+  if (strchr("vs", c)) {
+    return 1;
+  }
+  else if (strchr("^w", c)) {
+    return -1;
+  }
+  else return 0;
 }
 
 /* Task 4.2 */
 static char next_square(game_state_t* state, int snum) {
-  // TODO: Implement this function.
-  return '?';
+  snake_t snek = state->snakes[snum];
+  char head = get_board_at(state, snek.head_x, snek.head_y);
+  int next_x = snek.head_x + incr_x(head);
+  int next_y = snek.head_y + incr_y(head);
+  return get_board_at(state, next_x, next_y);
 }
 
 /* Task 4.3 */
 static void update_head(game_state_t* state, int snum) {
-  // TODO: Implement this function.
-  return;
+  snake_t *snek = &state->snakes[snum];
+  char head = get_board_at(state, snek->head_x, snek->head_y);
+  snek->head_x += incr_x(head);
+  snek->head_y += incr_y(head);
+  set_board_at(state, snek->head_x, snek->head_y, head);
 }
 
 /* Task 4.4 */

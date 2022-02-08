@@ -99,7 +99,7 @@ bool assert_state_equals(game_state_t* expected, game_state_t* actual) {
 
 bool test_is_tail() {
   // TODO: Implement this if you'd like!
-  if (!is_tail('w') || !is_tail('a') || !is_tail('s') || !is_tail('d') || is_tail('v')) {
+  if (!is_tail('w') || !is_tail('a') || !is_tail('s') || !is_tail('d') || is_tail('v') || is_tail('\0')) {
     return false;	
   }
   return true;
@@ -114,7 +114,7 @@ bool test_is_snake() {
 bool test_body_to_tail() {
   // TODO: Implement this if you'd like!
   return ((body_to_tail('^') == 'w') && (body_to_tail('<') == 'a') && (body_to_tail('>') == 'd')
-   && (body_to_tail('v') == 's') && (body_to_tail('g') == NULL) && (body_to_tail('\0') == NULL));
+   && (body_to_tail('v') == 's') && (body_to_tail('g') == '?') && (body_to_tail('\0') == '?'));
 }
 
 bool test_incr_x() {
