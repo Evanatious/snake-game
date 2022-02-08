@@ -203,33 +203,75 @@ void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
 
 /* Task 5 */
 game_state_t* load_board(char* filename) {
-  int size_x = 0;
-  int size_y = 0;
+  int size_x = 1; //Maybe wrong? idk
+  int size_y = 1;
   int num_snakes = 0;
 
-  FILE *fp = fopen(filename, "r");
+  FILE *fp = fopen(filename, "r"); //Opening file
   if(fp == NULL) {
       perror("Error in opening file");
       return(-1);
-   }
-
-  char c = fgetc(fp);
-  size_x++;
-  while(c != '\n') {
-    
   }
 
+  char c = 'h';
+  do { //Supposed to find x value
+    char c = fgetc(fp); //TODO: Figure out what to do if file is empty
+    printf("%c", c);
+    //if (c == '\n') {
+    //  printf("%s", "MADE IT HERE");
+    //}
+    //printf("%d", size_x);
+    if (c == EOF) {
+      printf("%s", "MADE IT HERE");
+      break;
+    }
+    size_x++; 
+  } while(c != '\n' || c != EOF);
 
+  do { //Supposed to find y value and number of snakes
+    char c = fgetc(fp);
+    if(c == '\n') {
+      size_y++;
+    } else if (is_tail(c)) {
+      num_snakes++;
+    }
+  } while(!feof(fp));
 
+  fclose(fp);
+    
+  fp = fopen(filename, "r");
+  if(fp == NULL) {
+      perror("Error in opening file");
+      return(-1);
+  }
+  
+  game_state_t *game = malloc(sizeof(game_state_t)); //Creating the game struct
+  if (game == NULL) {
+    perror("Malloc failed\n");
+  }
+  game->x_size = size_x; 
+  game->y_size = size_y;
+  game->board = malloc((game->y_size) * sizeof(char*));
+  if (game->board == NULL) {
+    perror("Malloc failed\n");
+  }
 
+  for (int i = 0; i < game->y_size; i++) {
+    game->board[i] = malloc((game->x_size + 1) * sizeof(char));
+    char *line = game->board[i];
+    char c;
+    if (line == NULL) {
+      perror("Malloc failed\n");
+    }
 
-
-
-
-
-
-   fclose(fp);
-   return(0);
+    for (int j = 0; j < game->x_size; j++) {
+      c = fgetc(fp);
+      line[j] = c;
+    }
+    line[game->x_size-1] = '\0';
+  }
+  fclose(fp);
+  return game;
 }
 
 /* Task 6.1 */
