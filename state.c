@@ -203,8 +203,33 @@ void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
 
 /* Task 5 */
 game_state_t* load_board(char* filename) {
-  // TODO: Implement this function.
-  return NULL;
+  int size_x = 0;
+  int size_y = 0;
+  int num_snakes = 0;
+
+  FILE *fp = fopen(filename, "r");
+  if(fp == NULL) {
+      perror("Error in opening file");
+      return(-1);
+   }
+
+  char c = fgetc(fp);
+  size_x++;
+  while(c != '\n') {
+    
+  }
+
+
+
+
+
+
+
+
+
+
+   fclose(fp);
+   return(0);
 }
 
 /* Task 6.1 */
