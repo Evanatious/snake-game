@@ -297,17 +297,16 @@ game_state_t* initialize_snakes(game_state_t* state) {
   // TODO: Implement this function.
   int num_snakes = 0;
   for (int i = 0; i < state->y_size; i++) {
-    //printf("%d", i);
     for (int j = 0; j < state->x_size; j++) {
-      printf("%s %d %d", "made it to", i, j);
-      if (is_tail(state->board[i][j])){
+      if(is_tail(get_board_at(state, j, i))) {
         num_snakes++;
       }
     }
-    
   }
+
+
+
   state->num_snakes = num_snakes;
-  printf("%d", num_snakes);
   state->snakes = malloc(sizeof(snake_t) * num_snakes);
   if(state->snakes == NULL) {
     perror("Malloc failed");
@@ -317,9 +316,9 @@ game_state_t* initialize_snakes(game_state_t* state) {
   for (int i = 0; i < state->y_size; i++) {
     for (int j = 0; j < state->x_size; j++)
     {
-      if (is_tail(state->board[i][j])){
-        (&(state->snakes[num_snakes]))->tail_x = i;
-        (&(state->snakes[num_snakes]))->tail_y = j;
+      if (is_tail(get_board_at(state, j, i))){
+        (&(state->snakes[num_snakes]))->tail_x = j;
+        (&(state->snakes[num_snakes]))->tail_y = i;
         (&(state->snakes[num_snakes]))->live = true;
         num_snakes++;
       }
@@ -329,4 +328,6 @@ game_state_t* initialize_snakes(game_state_t* state) {
   for (int i = 0; i<num_snakes; i++) {
     find_head(state, i);
   }
+
+  return state;
 }
