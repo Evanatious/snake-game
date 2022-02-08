@@ -203,7 +203,7 @@ void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
 
 /* Task 5 */
 game_state_t* load_board(char* filename) {
-  int size_x = 1; //Maybe wrong? idk
+  int size_x = 0; //Maybe wrong? idk
   int size_y = 1;
   int num_snakes = 0;
 
@@ -216,13 +216,11 @@ game_state_t* load_board(char* filename) {
   char c = 'h';
   do { //Supposed to find x value
     char c = fgetc(fp); //TODO: Figure out what to do if file is empty
-    printf("%c", c);
     //if (c == '\n') {
     //  printf("%s", "MADE IT HERE");
     //}
     //printf("%d", size_x);
-    if (c == EOF) {
-      printf("%s", "MADE IT HERE");
+    if (c == '\n') {
       break;
     }
     size_x++; 
@@ -236,6 +234,7 @@ game_state_t* load_board(char* filename) {
       num_snakes++;
     }
   } while(!feof(fp));
+
 
   fclose(fp);
     
@@ -268,8 +267,10 @@ game_state_t* load_board(char* filename) {
       c = fgetc(fp);
       line[j] = c;
     }
-    line[game->x_size-1] = '\0';
+    fgetc(fp);
+    line[game->x_size] = '\0';
   }
+  //print_board(game);
   fclose(fp);
   return game;
 }
@@ -277,7 +278,19 @@ game_state_t* load_board(char* filename) {
 /* Task 6.1 */
 static void find_head(game_state_t* state, int snum) {
   // TODO: Implement this function.
-  return;
+  for (int i = 0; i < state->num_snakes; i++) {
+    snake_t snek = state->snakes[i];
+    int curr_x = snek.tail_x;
+    int curr_y = snek.tail_y;
+    char curr = get_board_at(state, curr_x, curr_y);
+    while (is_snake(curr)) {
+      curr_x += incr_x(curr);
+      curr_y += incr_y(curr);
+      curr = get_board_at(state, curr_x, curr_y);
+    }
+    (&snek)->head_x = curr_x;
+    (&snek)->head_y = curr_y;
+  }
 }
 
 /* Task 6.2 */
