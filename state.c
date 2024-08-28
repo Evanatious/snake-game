@@ -18,12 +18,12 @@ static char next_square(game_state_t* state, int snum);
 static void update_tail(game_state_t* state, int snum);
 static void update_head(game_state_t* state, int snum);
 
-/* Helper function to get a character from the board (already implemented for you). */
+/* Helper function to get a character from the board. */
 static char get_board_at(game_state_t* state, int x, int y) {
   return state->board[y][x];
 }
 
-/* Helper function to set a character on the board (already implemented for you). */
+/* Helper function to set a character on the board. */
 static void set_board_at(game_state_t* state, int x, int y, char ch) {
   state->board[y][x] = ch;
 }
@@ -76,7 +76,7 @@ void free_state(game_state_t* state) {
     free(state->board[i]);
   }
   free(state->board);
-  free(state->snakes); //TODO: MIGHT have to change this in the case of more than one snake?
+  free(state->snakes);
   free(state);
   return;
 }
@@ -90,7 +90,7 @@ void print_board(game_state_t* state, FILE* fp) {
   return;
 }
 
-/* Saves the current state into filename (already implemented for you). */
+/* Saves the current state into filename. */
 void save_board(game_state_t* state, char* filename) {
   FILE* f = fopen(filename, "w");
   print_board(state, f);
@@ -203,23 +203,19 @@ void update_state(game_state_t* state, int (*add_food)(game_state_t* state)) {
 
 /* Task 5 */
 game_state_t* load_board(char* filename) {
-  int size_x = 0; //Maybe wrong? idk
+  int size_x = 0;
   int size_y = 1;
   int num_snakes = 0;
 
   FILE *fp = fopen(filename, "r"); //Opening file
   if(fp == NULL) {
       perror("Error in opening file");
-      return(-1);
+      return NULL;
   }
 
   char c = 'h';
   do { //Supposed to find x value
-    char c = fgetc(fp); //TODO: Figure out what to do if file is empty
-    //if (c == '\n') {
-    //  printf("%s", "MADE IT HERE");
-    //}
-    //printf("%d", size_x);
+    char c = fgetc(fp); 
     if (c == '\n') {
       break;
     }
@@ -241,7 +237,7 @@ game_state_t* load_board(char* filename) {
   fp = fopen(filename, "r");
   if(fp == NULL) {
       perror("Error in opening file");
-      return(-1);
+      return NULL;
   }
   
   game_state_t *game = malloc(sizeof(game_state_t)); //Creating the game struct
@@ -253,6 +249,9 @@ game_state_t* load_board(char* filename) {
   game->board = malloc((game->y_size) * sizeof(char*));
   if (game->board == NULL) {
     perror("Malloc failed\n");
+    free(game);
+    fclose(fp);
+    return NULL;
   }
 
   for (int i = 0; i < game->y_size; i++) {
@@ -261,6 +260,14 @@ game_state_t* load_board(char* filename) {
     char c;
     if (line == NULL) {
       perror("Malloc failed\n");
+      // Free previously allocated memory
+      for (int k = 0; k < i; k++) {
+          free(game->board[k]);
+      }
+      free(game->board);
+      free(game);
+      fclose(fp);
+      return NULL;
     }
 
     for (int j = 0; j < game->x_size; j++) {
@@ -277,8 +284,6 @@ game_state_t* load_board(char* filename) {
 
 /* Task 6.1 */
 static void find_head(game_state_t* state, int snum) {
-  // TODO: Implement this function.
-  
   snake_t *snek = &state->snakes[snum];
   int curr_x = snek->tail_x;
   int curr_y = snek->tail_y;
@@ -294,7 +299,6 @@ static void find_head(game_state_t* state, int snum) {
 
 /* Task 6.2 */
 game_state_t* initialize_snakes(game_state_t* state) {
-  // TODO: Implement this function.
   int num_snakes = 0;
   for (int i = 0; i < state->y_size; i++) {
     for (int j = 0; j < state->x_size; j++) {

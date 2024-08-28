@@ -134,3 +134,10 @@ unit-test-*.snk
 
 # Temp files
 *.tmp
+
+# Ignore Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
